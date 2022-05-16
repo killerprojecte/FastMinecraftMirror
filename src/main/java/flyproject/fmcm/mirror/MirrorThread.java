@@ -11,6 +11,8 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MirrorThread implements Runnable{
     @Override
@@ -35,8 +37,9 @@ public class MirrorThread implements Runnable{
                 String vcon = FTS.fts(vjs);
                 SyncVersion.sync(vcon);
             }
+            FastMinecraftMirror.logger.info("Checked in " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             try {
-                Thread.sleep(1000*60*5);
+                Thread.sleep(1000*60*30);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

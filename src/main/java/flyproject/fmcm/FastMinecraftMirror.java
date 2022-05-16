@@ -18,7 +18,23 @@ public class FastMinecraftMirror {
         logger.warn("This project is only mirror for minecraft resource server");
         logger.warn("Software is free but don't using in business");
         logger.warn("(c) Copyright 2022-* FastMinecraftMirror Studio & FlyProject Team.");
-        new Thread(new MirrorThread()).start();
+        Thread t = new Thread(new MirrorThread());
+        t.start();
+        Thread d = new Thread(() -> {
+            while (true){
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (!t.isAlive()){
+                    logger.warn("Warning Mirror thread dead! Restarting");
+                    t.start();
+                }
+            }
+        });
+        d.setDaemon(true);
+        d.start();
     }
 
     public static void saveResource(String name){

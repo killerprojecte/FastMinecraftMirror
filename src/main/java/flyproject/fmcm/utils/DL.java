@@ -21,7 +21,8 @@ public class DL {
             Files.copy(ins, target, StandardCopyOption.REPLACE_EXISTING);
             return file;
         } catch (IOException e) {
-            e.printStackTrace();
+            FastMinecraftMirror.logger.error("[ERROR] Can't reslove file " + url + " Retrying");
+            dlFile(url,save);
         }
         return null;
     }
@@ -38,7 +39,8 @@ public class DL {
             Files.copy(ins, target, StandardCopyOption.REPLACE_EXISTING);
             return file;
         } catch (IOException e) {
-            e.printStackTrace();
+            FastMinecraftMirror.logger.error("[ERROR] Can't reslove file " + url + " Retrying");
+            dlFile(url,save,sha);
         }
         return null;
     }
@@ -54,7 +56,8 @@ public class DL {
             FastMinecraftMirror.synctotal++;
             return file;
         } catch (IOException e) {
-            e.printStackTrace();
+            FastMinecraftMirror.logger.error("[ERROR] Can't reslove file " + url + " Retrying");
+            dlFile(url,save,size);
         }
         return null;
     }

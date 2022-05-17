@@ -1,5 +1,7 @@
 package flyproject.fmcm.utils;
 
+import flyproject.fmcm.FastMinecraftMirror;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,8 +13,9 @@ import java.security.NoSuchAlgorithmException;
 
 public class DL {
     public static File dlFile(String url, String save){
+        File file = new File(System.getProperty("user.dir") + "/" + save);
+        if (file.exists()) return file;
         try (InputStream ins = new URL(url).openStream()) {
-            File file = new File(System.getProperty("user.dir") + "/" + save);
             Path target = file.toPath();
             Files.createDirectories(target.getParent());
             Files.copy(ins, target, StandardCopyOption.REPLACE_EXISTING);
@@ -25,15 +28,9 @@ public class DL {
     public static File dlFile(String url, String save, String sha){
         File file = new File(System.getProperty("user.dir") + "/" + save);
         if (file.exists()){
-            String hash = null;
-            try {
-                hash = Hash.getSha1(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
-            if (sha.equals(hash)) return file;
+            if (FastMinecraftMirror.checks_map.containsKey(file)) return file;
+            FastMinecraftMirror.checks_map.put(file,new String[]{sha,url,save});
+            return file;
         }
         try (InputStream ins = new URL(url).openStream()) {
             Path target = file.toPath();
@@ -54,6 +51,7 @@ public class DL {
             Path target = file.toPath();
             Files.createDirectories(target.getParent());
             Files.copy(ins, target, StandardCopyOption.REPLACE_EXISTING);
+            FastMinecraftMirror.synctotal++;
             return file;
         } catch (IOException e) {
             e.printStackTrace();

@@ -10,9 +10,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FastMinecraftMirror {
     public static Logger logger = LogManager.getRootLogger();
+    public static long synctotal = 0L;
+    public static Map<File,String[]> checks_map = new HashMap<>();
 
     public static void main(String[] args) {
         logger.warn("This project is only mirror for minecraft resource server");
@@ -35,6 +39,16 @@ public class FastMinecraftMirror {
         });
         d.setDaemon(true);
         d.start();
+        new Thread(() -> {
+            while (true){
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                logger.info("[Sync] Sync Mirror Total: " + synctotal);
+            }
+        }).start();
     }
 
     public static void saveResource(String name){

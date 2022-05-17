@@ -21,7 +21,7 @@ public class SyncVersion {
             JsonObject dlj = aioj.get(map.getKey()).getAsJsonObject();
             String hash = dlj.get("hash").getAsString();
             long size = dlj.get("size").getAsLong();
-            File resource = DL.dlFile("https://resources.download.minecraft.net/" + hash.substring(0,2) + "/" + hash,"resources/" + hash.substring(0,2) + "/" + hash,size);
+            DL.dlFile("https://resources.download.minecraft.net/" + hash.substring(0,2) + "/" + hash,"resources/" + hash.substring(0,2) + "/" + hash,size);
         }
         //Sync Cient & Server & Mappings
         JsonObject dlj = jo.get("downloads").getAsJsonObject();
@@ -36,11 +36,23 @@ public class SyncVersion {
         //Lib download
         JsonArray lijo = jo.get("libraries").getAsJsonArray();
         for (int i = 0;i<lijo.size();i++){
-            JsonObject djo = lijo.get(i).getAsJsonObject().get("downloads").getAsJsonObject().get("artifact").getAsJsonObject();
-            String path = djo.get("path").getAsString();
-            String url = djo.get("url").getAsString();
-            String sha = djo.get("sha1").getAsString();
-            DL.dlFile(url,"libraries/" + path,sha);
+            JsonObject djo = lijo.get(i).getAsJsonObject().get("downloads").getAsJsonObject();
+            if (djo.has("artifact")){
+                JsonObject ajo = djo.get("artifact").getAsJsonObject();
+                String path = ajo.get("path").getAsString();
+                String url = ajo.get("url").getAsString();
+                String sha = ajo.get("sha1").getAsString();
+                DL.dlFile(url,"libraries/" + path,sha);
+            }
+            if (djo.has("classifiers")){
+                JsonObject cjo = djo.get("classifiers").getAsJsonObject();
+                for (Map.Entry<String,JsonElement> map : cjo.entrySet()){
+                    String path = cjo.get(map.getKey()).getAsJsonObject().get("path").getAsString();
+                    String sha = cjo.get(map.getKey()).getAsJsonObject().get("sha1").getAsString();
+                    String url = cjo.get(map.getKey()).getAsJsonObject().get("url").getAsString();
+                    DL.dlFile(url,"libraries/" + path,sha);
+                }
+            }
         }
     }
 }

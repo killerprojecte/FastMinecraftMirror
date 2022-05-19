@@ -1,8 +1,6 @@
 package flyproject.fmcm.mirror;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import flyproject.fmcm.FastMinecraftMirror;
 import flyproject.fmcm.utils.DL;
 import flyproject.fmcm.utils.FTS;
@@ -15,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public class MirrorThread implements Runnable{
     @Override
@@ -38,9 +37,29 @@ public class MirrorThread implements Runnable{
                 String version = vo.get("id").getAsString();
                 String vurl = vo.get("url").getAsString();
                 File vjs = DL.dlFile(vurl,vurl.replaceFirst("https://launchermeta.mojang.com","launchermeta"));
-                FastMinecraftMirror.logger.info("Sync Minecraft Version: " + version);
+                FastMinecraftMirror.logger.info("[Mojang] Sync Minecraft Version: " + version);
                 String vcon = FTS.fts(vjs);
                 SyncVersion.sync(vcon);
+            }
+            File forgefile = DL.dlFile("https://bmclapi.bangbang93.com/maven/net/minecraftforge/forge/json","forge/net/minecraftforge/forge/json");
+            String forge = FTS.fts(forgefile);
+            JsonObject fo = new JsonParser().parse(forge).getAsJsonObject();
+            String upath = fo.get("webpath").getAsString();
+            JsonObject builds = fo.get("number").getAsJsonObject();
+            for (Map.Entry<String, JsonElement> je : builds.entrySet()){
+                JsonObject bo = builds.get(je.getKey()).getAsJsonObject();
+                String mcversion = bo.get("mcversion").getAsString();
+                String forgeversion = bo.get("version").getAsString();
+                FastMinecraftMirror.logger.info("[Forge] Sync " + mcversion + "-" + forgeversion);
+                JsonArray forgearray = bo.get("files").getAsJsonArray();
+                String path = mcversion + "-" + forgeversion + "/forge-" + mcversion + "-" + forgeversion + "-";
+                for (int i = 0;i<forgearray.size();i++){
+                    JsonArray fa = forgearray.get(i).getAsJsonArray();
+                    String type = fa.get(0).getAsString();
+                    String name = fa.get(1).getAsString();
+                    String md5 = fa.get(2).getAsString();
+                    DL.dlFileMd5(upath + path + name + "." + type,"forge/" + path + name + "." + type,md5);
+                }
             }
             FastMinecraftMirror.logger.info("Checked in " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             try {

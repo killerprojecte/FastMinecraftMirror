@@ -43,7 +43,6 @@ public class MirrorThread implements Runnable{
                 SyncVersion.sync(vcon);
             }
             FastMinecraftMirror.logger.info("Checked in " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-            new Thread(new PurpurSync()).start();
             try {
                 Thread.sleep(1000*60*30);
             } catch (InterruptedException e) {

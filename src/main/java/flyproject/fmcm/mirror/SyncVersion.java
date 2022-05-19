@@ -27,11 +27,11 @@ public class SyncVersion {
         JsonObject dlj = jo.get("downloads").getAsJsonObject();
         if (dlj.has("server")){
             String client_mapping = dlj.get("server").getAsJsonObject().get("url").getAsString();
-            DL.dlFile(client_mapping,client_mapping.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("client_mappings").getAsJsonObject().get("sha1").getAsString());
+            DL.dlFile(client_mapping,client_mapping.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("server").getAsJsonObject().get("sha1").getAsString());
         }
         if (dlj.has("client")){
             String client_mapping = dlj.get("client").getAsJsonObject().get("url").getAsString();
-            DL.dlFile(client_mapping,client_mapping.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("client_mappings").getAsJsonObject().get("sha1").getAsString());
+            DL.dlFile(client_mapping,client_mapping.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("client").getAsJsonObject().get("sha1").getAsString());
         }
         if (dlj.has("client_mappings")){
             String client_mapping = dlj.get("client_mappings").getAsJsonObject().get("url").getAsString();

@@ -21,6 +21,9 @@ public class MirrorThread implements Runnable{
     public void run() {
         FastMinecraftMirror.logger.info("Starting Mirror!");
         while (true){
+            File java = DL.dlFile("https://launchermeta.mojang.com/v1/products/java-runtime/2ec0cc96c44e5a76b9c8b7c39df7210883d12871/all.json","launchermeta/v1/products/java-runtime/2ec0cc96c44e5a76b9c8b7c39df7210883d12871/all.json");
+            String javajson = FTS.fts(java);
+            JsonObject javao = new JsonParser().parse(javajson).getAsJsonObject();
             File json = DL.dlFile("http://launchermeta.mojang.com/mc/game/version_manifest.json","launchermeta/mc/game/version_manifest.json");
             DL.dlFile("http://launchermeta.mojang.com/mc/game/version_manifest_v2.json","launchermeta/mc/game/version_manifest_v2.json");
             String jcon = null;

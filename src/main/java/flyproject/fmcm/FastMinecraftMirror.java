@@ -153,7 +153,6 @@ public class FastMinecraftMirror {
             }
         });
         test.start();
-        testd.setDaemon(true);
         testd.start();
         try {
             Thread.sleep(1001);
@@ -180,7 +179,6 @@ public class FastMinecraftMirror {
                 }
             }
         });
-        d.setDaemon(true);
         d.start();
         new Thread(() -> {
             while (true){

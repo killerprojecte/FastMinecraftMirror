@@ -39,4 +39,27 @@ public class Hash {
     }
 
     protected static char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E','F' };
+
+    public static String md5(File file){
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            FileInputStream fis = new FileInputStream(file);
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = fis.read(buffer)) != -1) {
+                md5.update(buffer, 0, len);
+            }
+            fis.close();
+
+            byte[] byteArray = md5.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte b : byteArray) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (IOException | NoSuchAlgorithmException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

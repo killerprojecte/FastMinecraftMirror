@@ -39,25 +39,8 @@ public class MirrorThread implements Runnable{
                 String vcon = FTS.fts(vjs);
                 SyncVersion.sync(vcon);
             }
-            for (File file : FastMinecraftMirror.checks_map.keySet()){
-                String[] options = FastMinecraftMirror.checks_map.get(file);
-                String sha1 = options[0];
-                String url = options[1];
-                String save = options[2];
-                String hash = null;
-                try {
-                    hash = Hash.getSha1(file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-                if (!sha1.equals(hash)){
-                    DL.dlFile(url,save);
-                }
-            }
-            FastMinecraftMirror.logger.info("Checked " + FastMinecraftMirror.checks_map.size() + " Files Hash");
             FastMinecraftMirror.logger.info("Checked in " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            new Thread(new PurpurSync()).start();
             try {
                 Thread.sleep(1000*60*30);
             } catch (InterruptedException e) {

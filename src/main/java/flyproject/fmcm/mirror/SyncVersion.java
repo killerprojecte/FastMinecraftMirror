@@ -26,12 +26,12 @@ public class SyncVersion {
         //Sync Cient & Server & Mappings
         JsonObject dlj = jo.get("downloads").getAsJsonObject();
         if (dlj.has("server")){
-            String client_mapping = dlj.get("server").getAsJsonObject().get("url").getAsString();
-            DL.dlFile(client_mapping,client_mapping.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("server").getAsJsonObject().get("sha1").getAsString());
+            String server = dlj.get("server").getAsJsonObject().get("url").getAsString();
+            DL.dlFile(server,server.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("server").getAsJsonObject().get("sha1").getAsString());
         }
         if (dlj.has("client")){
-            String client_mapping = dlj.get("client").getAsJsonObject().get("url").getAsString();
-            DL.dlFile(client_mapping,client_mapping.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("client").getAsJsonObject().get("sha1").getAsString());
+            String client = dlj.get("client").getAsJsonObject().get("url").getAsString();
+            DL.dlFile(client,client.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("client").getAsJsonObject().get("sha1").getAsString());
         }
         if (dlj.has("client_mappings")){
             String client_mapping = dlj.get("client_mappings").getAsJsonObject().get("url").getAsString();
@@ -42,8 +42,8 @@ public class SyncVersion {
             DL.dlFile(server_mapping,server_mapping.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("server_mappings").getAsJsonObject().get("sha1").getAsString());
         }
         if (dlj.has("windows_server")){
-            String server_mapping = dlj.get("windows_server").getAsJsonObject().get("url").getAsString();
-            DL.dlFile(server_mapping,server_mapping.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("server_mappings").getAsJsonObject().get("sha1").getAsString());
+            String windows_server = dlj.get("windows_server").getAsJsonObject().get("url").getAsString();
+            DL.dlFile(windows_server,windows_server.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("windows_server").getAsJsonObject().get("sha1").getAsString());
         }
         //Lib download
         JsonArray lijo = jo.get("libraries").getAsJsonArray();

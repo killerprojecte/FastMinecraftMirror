@@ -18,6 +18,13 @@ public class FTS {
     }
     public static void stf(String file,String text){
         File f = new File(System.getProperty("user.dir") + "/" + file);
+        if (!f.exists()){
+            try {
+                f.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         try {
             FileUtils.writeStringToFile(f,text);
         } catch (IOException e) {

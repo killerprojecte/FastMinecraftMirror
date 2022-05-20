@@ -18,6 +18,7 @@ import java.util.Objects;
 public class DL {
     public static File dlFile(String url, String save){
         File file = new File(System.getProperty("user.dir") + "/" + save);
+        url = url.replace("http://repo.maven.apache.org","https://repo.maven.apache.org");
         if (url==null){
             return file;
         }
@@ -35,12 +36,12 @@ public class DL {
             return file;
         } catch (IOException e) {
             FastMinecraftMirror.logger.error("[ERROR] Can't reslove file " + url + " Retrying");
-            dlFile(url,save);
         }
         return null;
     }
     public static File dlFile(String url, String save, String sha){
         File file = new File(System.getProperty("user.dir") + "/" + save);
+        url = url.replace("http://repo.maven.apache.org","https://repo.maven.apache.org");
         if (url==null){
             return file;
         }
@@ -66,12 +67,12 @@ public class DL {
             return file;
         } catch (IOException e) {
             FastMinecraftMirror.logger.error("[ERROR] Can't reslove file " + url + " Retrying");
-            dlFile(url,save,sha);
         }
         return null;
     }
     public static File dlFile(String url, String save, long size){
         File file = new File(System.getProperty("user.dir") + "/" + save);
+        url = url.replace("http://repo.maven.apache.org","https://repo.maven.apache.org");
         if (url==null){
             return file;
         }
@@ -91,12 +92,12 @@ public class DL {
             return file;
         } catch (IOException e) {
             FastMinecraftMirror.logger.error("[ERROR] Can't reslove file " + url + " Retrying");
-            dlFile(url,save,size);
         }
         return null;
     }
     public static File dlFileMd5(String url, String save, String md5){
         File file = new File(System.getProperty("user.dir") + "/" + save);
+        url = url.replace("http://repo.maven.apache.org","https://repo.maven.apache.org");
         if (url==null){
             return file;
         }
@@ -118,8 +119,15 @@ public class DL {
             return file;
         } catch (IOException e) {
             FastMinecraftMirror.logger.error("[ERROR] Can't reslove file " + url + " Retrying");
-            dlFileMd5(url,save,md5);
         }
         return null;
+    }
+    public static File getStringfile(String url,String save){
+        File file = new File(System.getProperty("user.dir") + "/" + save);
+        if (!file.getParentFile().exists()){
+            file.getParentFile().mkdirs();
+        }
+        FTS.stf(save,HttpUtils.doGet(url));
+        return file;
     }
 }

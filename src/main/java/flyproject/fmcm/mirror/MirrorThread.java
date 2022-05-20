@@ -41,7 +41,7 @@ public class MirrorThread implements Runnable{
                 String vcon = FTS.fts(vjs);
                 SyncVersion.sync(vcon);
             }
-            File forgefile = DL.dlFile("https://bmclapi.bangbang93.com/maven/net/minecraftforge/forge/json","forge/net/minecraftforge/forge/json");
+            File forgefile = DL.dlFile("https://download.mcbbs.net/maven/net/minecraftforge/forge/json","forge/net/minecraftforge/forge/json");
             String forge = FTS.fts(forgefile);
             JsonObject fo = new JsonParser().parse(forge).getAsJsonObject();
             String upath = fo.get("webpath").getAsString();
@@ -52,7 +52,14 @@ public class MirrorThread implements Runnable{
                 String forgeversion = bo.get("version").getAsString();
                 FastMinecraftMirror.logger.info("[Forge] Sync " + mcversion + "-" + forgeversion);
                 JsonArray forgearray = bo.get("files").getAsJsonArray();
-                String path = mcversion + "-" + forgeversion + "/forge-" + mcversion + "-" + forgeversion + "-";
+                String root = mcversion + "-" + forgeversion;
+                if (!bo.get("branch").isJsonNull()){
+                    root = root + "-" + bo.get("branch").getAsString();
+                }
+                String path = root + "/forge-" + mcversion + "-" + forgeversion + "-";
+                if (!bo.get("branch").isJsonNull()){
+                    path = path + "-" + bo.get("branch").getAsString() + "-";
+                }
                 for (int i = 0;i<forgearray.size();i++){
                     JsonArray fa = forgearray.get(i).getAsJsonArray();
                     String type = fa.get(0).getAsString();

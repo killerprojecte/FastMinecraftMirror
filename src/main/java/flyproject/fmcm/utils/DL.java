@@ -89,6 +89,7 @@ public class DL {
             Path target = file.toPath();
             Files.createDirectories(target.getParent());
             Files.copy(ins, target, StandardCopyOption.REPLACE_EXISTING);
+            FastMinecraftMirror.synctotal++;
             return file;
         } catch (IOException e) {
             FastMinecraftMirror.logger.error("[ERROR] Can't reslove file " + url + " Retrying");

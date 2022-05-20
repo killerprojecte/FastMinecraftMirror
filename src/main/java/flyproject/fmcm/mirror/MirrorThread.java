@@ -41,33 +41,6 @@ public class MirrorThread implements Runnable{
                 String vcon = FTS.fts(vjs);
                 SyncVersion.sync(vcon);
             }
-            File forgefile = DL.dlFile("https://download.mcbbs.net/maven/net/minecraftforge/forge/json","forge/net/minecraftforge/forge/json");
-            String forge = FTS.fts(forgefile);
-            JsonObject fo = new JsonParser().parse(forge).getAsJsonObject();
-            String upath = fo.get("webpath").getAsString();
-            JsonObject builds = fo.get("number").getAsJsonObject();
-            for (Map.Entry<String, JsonElement> je : builds.entrySet()){
-                JsonObject bo = builds.get(je.getKey()).getAsJsonObject();
-                String mcversion = bo.get("mcversion").getAsString();
-                String forgeversion = bo.get("version").getAsString();
-                FastMinecraftMirror.logger.info("[Forge] Sync " + mcversion + "-" + forgeversion);
-                JsonArray forgearray = bo.get("files").getAsJsonArray();
-                String root = mcversion + "-" + forgeversion;
-                if (!bo.get("branch").isJsonNull()){
-                    root = root + "-" + bo.get("branch").getAsString();
-                }
-                String path = root + "/forge-" + mcversion + "-" + forgeversion + "-";
-                if (!bo.get("branch").isJsonNull()){
-                    path = path + "-" + bo.get("branch").getAsString() + "-";
-                }
-                for (int i = 0;i<forgearray.size();i++){
-                    JsonArray fa = forgearray.get(i).getAsJsonArray();
-                    String type = fa.get(0).getAsString();
-                    String name = fa.get(1).getAsString();
-                    String md5 = fa.get(2).getAsString();
-                    DL.dlFileMd5(upath + path + name + "." + type,"forge/" + path + name + "." + type,md5);
-                }
-            }
             FastMinecraftMirror.logger.info("Checked in " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             try {
                 Thread.sleep(1000*60*30);

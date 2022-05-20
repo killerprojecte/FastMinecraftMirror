@@ -43,7 +43,7 @@ public class MirrorThread implements Runnable{
             }
             FastMinecraftMirror.logger.info("Checked in " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             try {
-                Thread.sleep(1000*60*30);
+                Thread.sleep(1000*60*60*2L);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -1,9 +1,6 @@
 package flyproject.fmcm;
 
-import flyproject.fmcm.mirror.FabricMirror;
-import flyproject.fmcm.mirror.ForgeMirror;
-import flyproject.fmcm.mirror.MirrorThread;
-import flyproject.fmcm.mirror.PurpurSync;
+import flyproject.fmcm.mirror.*;
 import flyproject.fmcm.utils.DL;
 import flyproject.fmcm.utils.FTS;
 import flyproject.fmcm.utils.HttpUtils;
@@ -23,6 +20,7 @@ public class FastMinecraftMirror {
     private static Thread test;
     private static Thread forge;
     private static Thread fabric;
+    private static Thread optifine;
 
     public static void main(String[] args) {
         PrintStream info = new PrintStream(System.out) {
@@ -174,6 +172,8 @@ public class FastMinecraftMirror {
         forge.start();
         fabric = new Thread(new FabricMirror());
         fabric.start();
+        optifine = new Thread(new OptifineMirror());
+        optifine.start();
         Thread d = new Thread(() -> {
             while (true){
                 try {
@@ -195,6 +195,11 @@ public class FastMinecraftMirror {
                     logger.warn("Warning Fabric Mirror thread dead! Restarting");
                     fabric = new Thread(new FabricMirror());
                     fabric.start();
+                }
+                if (!optifine.isAlive()){
+                    logger.warn("Warning Optifine Mirror thread dead! Restarting");
+                    optifine = new Thread(new OptifineMirror());
+                    optifine.start();
                 }
             }
         });

@@ -16,4 +16,12 @@ public class FTS {
         }
         return con;
     }
+    public static void stf(String file,String text){
+        File f = new File(System.getProperty("user.dir") + "/" + file);
+        try {
+            FileUtils.writeStringToFile(f,text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

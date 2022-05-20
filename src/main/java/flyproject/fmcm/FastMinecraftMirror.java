@@ -2,6 +2,7 @@ package flyproject.fmcm;
 
 import flyproject.fmcm.mirror.ForgeMirror;
 import flyproject.fmcm.mirror.MirrorThread;
+import flyproject.fmcm.mirror.PurpurSync;
 import flyproject.fmcm.utils.DL;
 import flyproject.fmcm.utils.FTS;
 import flyproject.fmcm.utils.HttpUtils;

@@ -2,10 +2,13 @@ package flyproject.fmcm.utils;
 
 import flyproject.fmcm.FastMinecraftMirror;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -19,10 +22,16 @@ public class DL {
             return file;
         }
         if (file.exists()) return file;
-        try (InputStream ins = new URL(url).openStream()) {
+        try {
+            URLConnection connection = new URL(url).openConnection();
+            connection.addRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Safari/537.36");
+            connection.setConnectTimeout(3*1000);
+            connection.connect();
+            InputStream ins = connection.getInputStream();
             Path target = file.toPath();
             Files.createDirectories(target.getParent());
             Files.copy(ins, target, StandardCopyOption.REPLACE_EXISTING);
+            FastMinecraftMirror.synctotal++;
             return file;
         } catch (IOException e) {
             FastMinecraftMirror.logger.error("[ERROR] Can't reslove file " + url + " Retrying");
@@ -44,10 +53,16 @@ public class DL {
             }
             if (sha.equals(hash)) return file;
         }
-        try (InputStream ins = new URL(url).openStream()) {
+        try {
+            URLConnection connection = new URL(url).openConnection();
+            connection.addRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Safari/537.36");
+            connection.setConnectTimeout(3*1000);
+            connection.connect();
+            InputStream ins = connection.getInputStream();
             Path target = file.toPath();
             Files.createDirectories(target.getParent());
             Files.copy(ins, target, StandardCopyOption.REPLACE_EXISTING);
+            FastMinecraftMirror.synctotal++;
             return file;
         } catch (IOException e) {
             FastMinecraftMirror.logger.error("[ERROR] Can't reslove file " + url + " Retrying");
@@ -63,7 +78,12 @@ public class DL {
         if (file.exists()){
             if (file.length()==size) return file;
         }
-        try (InputStream ins = new URL(url).openStream()) {
+        try {
+            URLConnection connection = new URL(url).openConnection();
+            connection.addRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Safari/537.36");
+            connection.setConnectTimeout(3*1000);
+            connection.connect();
+            InputStream ins = connection.getInputStream();
             Path target = file.toPath();
             Files.createDirectories(target.getParent());
             Files.copy(ins, target, StandardCopyOption.REPLACE_EXISTING);
@@ -85,7 +105,12 @@ public class DL {
             hash = Hash.md5(file);
             if (md5.equals(hash)) return file;
         }
-        try (InputStream ins = new URL(url).openStream()) {
+        try {
+            URLConnection connection = new URL(url).openConnection();
+            connection.addRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Safari/537.36");
+            connection.setConnectTimeout(3*1000);
+            connection.connect();
+            InputStream ins = connection.getInputStream();
             Path target = file.toPath();
             Files.createDirectories(target.getParent());
             Files.copy(ins, target, StandardCopyOption.REPLACE_EXISTING);
@@ -93,7 +118,7 @@ public class DL {
             return file;
         } catch (IOException e) {
             FastMinecraftMirror.logger.error("[ERROR] Can't reslove file " + url + " Retrying");
-            dlFile(url,save,md5);
+            dlFileMd5(url,save,md5);
         }
         return null;
     }

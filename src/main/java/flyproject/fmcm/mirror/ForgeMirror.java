@@ -19,7 +19,7 @@ public class ForgeMirror implements Runnable{
             File forgefile = DL.dlFile("https://download.mcbbs.net/maven/net/minecraftforge/forge/json","forge/net/minecraftforge/forge/json");
             String forge = FTS.fts(forgefile);
             JsonObject fo = new JsonParser().parse(forge).getAsJsonObject();
-            String upath = fo.get("webpath").getAsString();
+            String upath = fo.get("webpath").getAsString().replace("http://files.minecraftforge.net/maven","https://maven.minecraftforge.net");
             JsonObject builds = fo.get("number").getAsJsonObject();
             for (Map.Entry<String, JsonElement> je : builds.entrySet()){
                 JsonObject bo = builds.get(je.getKey()).getAsJsonObject();

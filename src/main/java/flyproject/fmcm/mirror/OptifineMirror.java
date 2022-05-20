@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import flyproject.fmcm.FastMinecraftMirror;
 import flyproject.fmcm.utils.DL;
 import flyproject.fmcm.utils.FTS;
 
@@ -21,6 +22,7 @@ public class OptifineMirror implements Runnable{
                 String mcversion = jo.get("mcversion").getAsString();
                 String type = jo.get("type").getAsString();
                 String patch = jo.get("patch").getAsString();
+                FastMinecraftMirror.logger.info("[Optifine] Sync " + mcversion + "_" + type + "_" + patch);
                 DL.dlFile("https://download.mcbbs.net/maven/com/optifine/" + mcversion + "/OptiFine_" + mcversion + "_" + type + "_" + patch + ".jar","optifine/OptiFine_" + mcversion + "_" + type + "_" + patch + ".jar");
             }
             try {

@@ -19,15 +19,16 @@ public class HttpUtils {
             conn.setRequestMethod("GET");
             conn.setConnectTimeout(15000);
             conn.setReadTimeout(60000);
-            conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("Accept", "*/*");
             conn.connect();
             if (200 == conn.getResponseCode()){
                 is = conn.getInputStream();
                 br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
                 String line;
                 while ((line = br.readLine()) != null){
-                    result.append(line);
+                    result.append(line).append("\n");
                 }
+                result.delete(result.length()-1,result.length());
             }else{
                 System.out.println("ResponseCode is an error code:" + conn.getResponseCode());
             }

@@ -48,6 +48,8 @@ public class OptifineMirror implements Runnable{
                     DL.dlFile(dl,"optifine/" + filename);
                 }
             }
+            String json = new Gson().toJson(ja);
+            FTS.stf("optifine/versionList.json",json);
             try {
                 Thread.sleep(1000L*60L*60L*2L);
             } catch (InterruptedException e) {

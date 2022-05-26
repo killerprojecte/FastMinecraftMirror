@@ -17,10 +17,10 @@ public class FabricMirror implements Runnable{
     @Override
     public void run() {
         while (true){
-            DL.dlFile("https://meta.fabricmc.net/v1/versions/game","fabricmeta/v1/versions/game.json");
-            DL.dlFile("https://meta.fabricmc.net/v1/versions/loader","fabricmeta/v1/versions/loader.json");
-            DL.dlFile("https://meta.fabricmc.net/v2/versions/loader","fabricmeta/v2/versions/loader.json");
-            File gamejson = DL.dlFile("https://meta.fabricmc.net/v2/versions/game","fabricmeta/v2/versions/game.json");
+            DL.dlFile_Replace("https://meta.fabricmc.net/v1/versions/game","fabricmeta/v1/versions/game.json");
+            DL.dlFile_Replace("https://meta.fabricmc.net/v1/versions/loader","fabricmeta/v1/versions/loader.json");
+            DL.dlFile_Replace("https://meta.fabricmc.net/v2/versions/loader","fabricmeta/v2/versions/loader.json");
+            File gamejson = DL.dlFile_Replace("https://meta.fabricmc.net/v2/versions/game","fabricmeta/v2/versions/game.json");
             String json = FTS.fts(gamejson);
             JsonArray ja = new JsonParser().parse(json).getAsJsonArray();
             for (JsonElement je : ja){
@@ -50,10 +50,10 @@ public class FabricMirror implements Runnable{
     }
     public static void syncMaven(String url){
         String main_html = HttpUtils.doGet(url);
-        Pattern pattern = Pattern.compile("\">.*</a>");
+        Pattern pattern = Pattern.compile("<a href=\".*\">");
         Matcher matcher = pattern.matcher(main_html);
         while (matcher.find()){
-            String data = matcher.group().replace("\">","").replace("</a>","");
+            String data = matcher.group().replace("<a href=\"","").replace("\">","");
             if (data.equals("../")) continue;
             if (data.endsWith("/")){
                 syncMaven(url + data);

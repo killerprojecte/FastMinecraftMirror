@@ -20,11 +20,11 @@ public class MirrorThread implements Runnable{
     public void run() {
         FastMinecraftMirror.logger.info("Starting Mirror!");
         while (true){
-            File java = DL.dlFile("https://launchermeta.mojang.com/v1/products/java-runtime/2ec0cc96c44e5a76b9c8b7c39df7210883d12871/all.json","launchermeta/v1/products/java-runtime/2ec0cc96c44e5a76b9c8b7c39df7210883d12871/all.json");
+            File java = DL.dlFile_Replace("https://launchermeta.mojang.com/v1/products/java-runtime/2ec0cc96c44e5a76b9c8b7c39df7210883d12871/all.json","launchermeta/v1/products/java-runtime/2ec0cc96c44e5a76b9c8b7c39df7210883d12871/all.json");
             String javajson = FTS.fts(java);
             JsonObject javao = new JsonParser().parse(javajson).getAsJsonObject();
-            File json = DL.dlFile("http://launchermeta.mojang.com/mc/game/version_manifest.json","launchermeta/mc/game/version_manifest.json");
-            DL.dlFile("http://launchermeta.mojang.com/mc/game/version_manifest_v2.json","launchermeta/mc/game/version_manifest_v2.json");
+            File json = DL.dlFile_Replace("http://launchermeta.mojang.com/mc/game/version_manifest.json","launchermeta/mc/game/version_manifest.json");
+            DL.dlFile_Replace("http://launchermeta.mojang.com/mc/game/version_manifest_v2.json","launchermeta/mc/game/version_manifest_v2.json");
             String jcon = null;
             try {
                 jcon = FileUtils.readFileToString(json, StandardCharsets.UTF_8);
@@ -36,7 +36,7 @@ public class MirrorThread implements Runnable{
                 JsonObject vo = jo.getAsJsonArray("versions").get(i).getAsJsonObject();
                 String version = vo.get("id").getAsString();
                 String vurl = vo.get("url").getAsString();
-                File vjs = DL.dlFile(vurl,vurl.replaceFirst("https://launchermeta.mojang.com","launchermeta"));
+                File vjs = DL.dlFile_Replace(vurl,vurl.replaceFirst("https://launchermeta.mojang.com","launchermeta"));
                 FastMinecraftMirror.logger.info("[Mojang] Sync Minecraft Version: " + version);
                 String vcon = FTS.fts(vjs);
                 SyncVersion.sync(vcon);

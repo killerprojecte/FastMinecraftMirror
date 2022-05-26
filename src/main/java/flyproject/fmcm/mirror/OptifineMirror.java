@@ -1,29 +1,52 @@
 package flyproject.fmcm.mirror;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import flyproject.fmcm.FastMinecraftMirror;
 import flyproject.fmcm.utils.DL;
 import flyproject.fmcm.utils.FTS;
+import flyproject.fmcm.utils.HttpUtils;
 
 import java.io.File;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class OptifineMirror implements Runnable{
     @Override
     public void run() {
         while (true){
-            File jfile = DL.getStringfile("https://download.mcbbs.net/optifine/versionList","optifine/versionList.json");
-            String js = FTS.fts(jfile);
-            JsonArray ja = new JsonParser().parse(js).getAsJsonArray();
-            for (JsonElement je : ja){
-                JsonObject jo = je.getAsJsonObject();
-                String mcversion = jo.get("mcversion").getAsString();
-                String type = jo.get("type").getAsString();
-                String patch = jo.get("patch").getAsString();
-                FastMinecraftMirror.logger.info("[Optifine] Sync " + mcversion + "_" + type + "_" + patch);
-                DL.dlFile("https://download.mcbbs.net/maven/com/optifine/" + mcversion + "/OptiFine_" + mcversion + "_" + type + "_" + patch + ".jar","optifine/OptiFine_" + mcversion + "_" + type + "_" + patch + ".jar");
+            JsonArray ja = new JsonArray();
+            String html = HttpUtils.doGet("https://optifine.net/downloads");
+            Pattern pattern = Pattern.compile("colMirror'><a href=\".*\">");
+            Matcher matcher = pattern.matcher(html);
+            while (matcher.find()){
+                String url = matcher.group().replace("colMirror'><a href=\"","").replace("\">","");
+                String filename = url.replace("http://optifine.net/adloadx?f=","");
+                FastMinecraftMirror.logger.info("[Optifine] Sync Optifine File: " + filename);
+                String[] arg = filename.replace(".jar","").split("_");
+                String mcversion = arg[1];
+                String type = arg[2] + "_" + arg[3];
+                StringBuilder version = new StringBuilder();
+                for (int i = 4;i<arg.length;i++){
+                    version.append(arg[i]);
+                    if (i<(arg.length-1)){
+                        version.append("_");
+                    }
+                }
+                JsonObject jo = new JsonObject();
+                jo.addProperty("mcversion",mcversion);
+                jo.addProperty("type",type);
+                jo.addProperty("version",version.toString());
+                jo.addProperty("file",filename);
+                jo.addProperty("url","https://optifine.fastmcmirror.org/" + filename);
+                ja.add(jo);
+                String adload = HttpUtils.doGet(url);
+                Pattern adp = Pattern.compile("<a href=.*>Download</a>");
+                Matcher adm = adp.matcher(adload);
+                while (adm.find()){
+                    String dl = adm.group().replace("<a href='","").replace("' onclick='onDownload()'>Download</a>","");
+                    DL.dlFile(dl,"optifine/" + filename);
+                }
             }
             try {
                 Thread.sleep(1000L*60L*60L*2L);

@@ -16,7 +16,7 @@ public class ForgeMirror implements Runnable{
     @Override
     public void run() {
         while (true){
-            File forgefile = DL.dlFile("https://download.mcbbs.net/maven/net/minecraftforge/forge/json","forge/net/minecraftforge/forge/json");
+            File forgefile = DL.dlFile_Replace("https://download.mcbbs.net/maven/net/minecraftforge/forge/json","forge/net/minecraftforge/forge/json");
             String forge = FTS.fts(forgefile);
             JsonObject fo = new JsonParser().parse(forge).getAsJsonObject();
             String upath = fo.get("webpath").getAsString().replace("http://files.minecraftforge.net/maven","https://maven.minecraftforge.net");

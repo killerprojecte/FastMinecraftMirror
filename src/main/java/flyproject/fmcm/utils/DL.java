@@ -39,6 +39,28 @@ public class DL {
         }
         return null;
     }
+    public static File dlFile_Replace(String url, String save){
+        File file = new File(System.getProperty("user.dir") + "/" + save);
+        url = url.replace("http://repo.maven.apache.org","https://repo.maven.apache.org");
+        if (url==null){
+            return file;
+        }
+        try {
+            URLConnection connection = new URL(url).openConnection();
+            connection.addRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Safari/537.36");
+            connection.setConnectTimeout(3*1000);
+            connection.connect();
+            InputStream ins = connection.getInputStream();
+            Path target = file.toPath();
+            Files.createDirectories(target.getParent());
+            Files.copy(ins, target, StandardCopyOption.REPLACE_EXISTING);
+            FastMinecraftMirror.synctotal++;
+            return file;
+        } catch (IOException e) {
+            FastMinecraftMirror.logger.error("[ERROR] Can't reslove file " + url + " Retrying");
+        }
+        return null;
+    }
     public static File dlFile(String url, String save, String sha){
         File file = new File(System.getProperty("user.dir") + "/" + save);
         url = url.replace("http://repo.maven.apache.org","https://repo.maven.apache.org");

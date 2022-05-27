@@ -92,7 +92,7 @@ public class ForgeMirror implements Runnable{
                 String path = root + "/forge-" + mcversion + "-" + forgeversion + "-";
                 if (!bo.get("branch").isJsonNull()){
                     if (!bo.get("branch").getAsString().equals("")){
-                        path = path + "-" + bo.get("branch").getAsString() + "-";
+                        path = path + bo.get("branch").getAsString() + "-";
                     }
                 }
                 for (int i = 0;i<forgearray.size();i++){

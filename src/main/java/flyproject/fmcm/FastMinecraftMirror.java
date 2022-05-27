@@ -21,6 +21,7 @@ public class FastMinecraftMirror {
     private static Thread forge;
     private static Thread fabric;
     private static Thread optifine;
+    private static Thread liteloader;
 
     public static void main(String[] args) {
         PrintStream info = new PrintStream(System.out) {
@@ -174,6 +175,8 @@ public class FastMinecraftMirror {
         fabric.start();
         optifine = new Thread(new OptifineMirror());
         optifine.start();
+        liteloader = new Thread(new LiteLoaderMirror());
+        liteloader.start();
         Thread d = new Thread(() -> {
             while (true){
                 try {
@@ -200,6 +203,11 @@ public class FastMinecraftMirror {
                     logger.warn("Warning Optifine Mirror thread dead! Restarting");
                     optifine = new Thread(new OptifineMirror());
                     optifine.start();
+                }
+                if (!liteloader.isAlive()){
+                    logger.warn("Warning LiteLoader Mirror thread dead! Restarting");
+                    liteloader = new Thread(new LiteLoaderMirror());
+                    liteloader.start();
                 }
             }
         });

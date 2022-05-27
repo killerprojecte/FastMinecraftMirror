@@ -5,17 +5,73 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import flyproject.fmcm.FastMinecraftMirror;
-import flyproject.fmcm.utils.DL;
-import flyproject.fmcm.utils.FTS;
+import flyproject.fmcm.utils.*;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ForgeMirror implements Runnable{
 
     @Override
     public void run() {
         while (true){
+            /*int num = 1;
+            JsonObject jo = new JsonObject();
+            JsonObject build = new JsonObject();
+            String root = "https://files.minecraftforge.net/net/minecraftforge/forge/";
+            String main_html = HttpUtils.doGet(root);
+            Pattern mainpattern = Pattern.compile("<a href=\"index_.*\">");
+            Matcher main_matcher = mainpattern.matcher(main_html);
+            while (main_matcher.find()){
+                Map<String, ForgeFiles> map = new HashMap<>();
+                String index = main_matcher.group().replace("<a href=\"","").replace("\">","");
+                String version = index.replace("index_","").replace(".html","");
+                String index_html = HttpUtils.doGet(root + index);
+                Pattern pattern = Pattern.compile("<a class=\"info-link\" data-toggle=\"popup\" href=\".*\" title=\"Direct Download\">");
+                Matcher matcher = pattern.matcher(index_html);
+                while (matcher.find()){
+                    String dl = matcher.group().replace("<a class=\"info-link\" data-toggle=\"popup\" href=\"","").replace("\" title=\"Direct Download\">","");
+                    File file = DL.dlFile(dl,dl.replace("https://maven.minecraftforge.net/","forge/"));
+                    String[] arg = file.getName().split("-");
+                    String forgeversion = arg[2];
+                    String type = arg[3];
+                    String filesuffix = file.getName().split(".")[file.getName().split(".").length];
+                    if (!map.containsKey(forgeversion)){
+                        ForgeFiles forgeFiles = new ForgeFiles();
+                        forgeFiles.addFile(filesuffix,type, Hash.md5(file));
+                        map.put(forgeversion,forgeFiles);
+                    } else {
+                        ForgeFiles forgeFiles = map.get(forgeversion);
+                        forgeFiles.addFile(filesuffix,type, Hash.md5(file));
+                        map.put(forgeversion,forgeFiles);
+                    }
+                }
+                Pattern other_pattern = Pattern.compile("<a href=\".*.txt\">");
+                Matcher other_matcher = other_pattern.matcher(index_html);
+                while (other_matcher.find()){
+                    String link = other_matcher.group().replace("<a href=\"","").replace("\">","");
+                    File file = DL.dlFile(link,link.replace("https://maven.minecraftforge.net/","forge/"));
+                    String[] arg = file.getName().split("-");
+                    String forgeversion = arg[2];
+                    String type = arg[3];
+                    String filesuffix = file.getName().split(".")[file.getName().split(".").length];
+                    if (!map.containsKey(forgeversion)){
+                        ForgeFiles forgeFiles = new ForgeFiles();
+                        forgeFiles.addFile(filesuffix,type, Hash.md5(file));
+                        map.put(forgeversion,forgeFiles);
+                    } else {
+                        ForgeFiles forgeFiles = map.get(forgeversion);
+                        forgeFiles.addFile(filesuffix,type, Hash.md5(file));
+                        map.put(forgeversion,forgeFiles);
+                    }
+                }
+                while (num<=map.size()){
+                    build.addProperty();
+                }
+            }*/
             File forgefile = DL.dlFile_Replace("https://download.mcbbs.net/maven/net/minecraftforge/forge/json","forge/net/minecraftforge/forge/json");
             String forge = FTS.fts(forgefile);
             JsonObject fo = new JsonParser().parse(forge).getAsJsonObject();

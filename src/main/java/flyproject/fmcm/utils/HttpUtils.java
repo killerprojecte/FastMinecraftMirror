@@ -30,7 +30,7 @@ public class HttpUtils {
                 }
                 result.delete(result.length()-1,result.length());
             }else{
-                System.out.println("ResponseCode is an error code:" + conn.getResponseCode());
+                System.out.println("ResponseCode is an error code:" + conn.getResponseCode() + " URL: " + URL);
             }
         }catch (Exception e){
             e.printStackTrace();

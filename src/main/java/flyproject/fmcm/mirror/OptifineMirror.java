@@ -63,12 +63,12 @@ public class OptifineMirror implements Runnable{
                     jo.addProperty("url","https://optifine.fastmcmirror.org/" + filename);
                     ja.add(jo);
                 }
-                String adload = HttpUtils.doGet(url);
+                String adload = HttpUtils.doGet(url.replace("http://optifine.net","https://optifine.net"));
                 Pattern adp = Pattern.compile("<a href=.*>Download</a>");
                 Matcher adm = adp.matcher(adload);
                 while (adm.find()){
                     String dl = adm.group().replace("<a href='","").replace("' onclick='onDownload()'>Download</a>","");
-                    DL.dlFile(dl,"optifine/" + filename);
+                    DL.dlFile("https://optifine.net/" + dl,"optifine/" + filename);
                 }
             }
             String json = new Gson().toJson(ja);

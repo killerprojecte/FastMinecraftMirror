@@ -27,12 +27,12 @@ public class LiteLoaderMirror implements Runnable{
         Pattern pattern = Pattern.compile("<a href=\".*\">");
         Matcher matcher = pattern.matcher(html);
         while (matcher.find()){
-            String link = matcher.group();
+            String link = matcher.group().replace("<a href=\"","").replace("\">","");
             if (link.equals("../")) continue;
             if (link.endsWith("/")){
-                syncLiteLoader(link);
+                syncLiteLoader(link.replace("http://repo.mumfrey.com/","https://repo.mumfrey.com/"));
             } else {
-                File file = DL.dlFile(url,url.replace("http://repo.mumfrey.com/","liteloader/").replace("https://repo.mumfrey.com/","liteloader/"));
+                File file = DL.dlFile(link.replace("http://repo.mumfrey.com/","https://repo.mumfrey.com/"),link.replace("http://repo.mumfrey.com/","liteloader/").replace("https://repo.mumfrey.com/","liteloader/"));
                 FastMinecraftMirror.logger.info("[LiteLoader] Sync file " + file.getName());
             }
         }

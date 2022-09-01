@@ -37,7 +37,6 @@ public class MirrorThread implements Runnable{
                 String version = vo.get("id").getAsString();
                 String vurl = vo.get("url").getAsString();
                 File vjs = DL.dlFile_Replace(vurl,vurl.replaceFirst("https://launchermeta.mojang.com","launchermeta")
-                        .replaceFirst("https://piston-data.mojang.com","launchermeta")
                         .replaceFirst("https://piston-meta.mojang.com","launchermeta"));
                 FastMinecraftMirror.logger.info("[Mojang] Sync Minecraft Version: " + version);
                 String vcon = FTS.fts(vjs);

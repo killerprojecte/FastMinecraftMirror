@@ -15,7 +15,8 @@ public class SyncVersion {
         JsonObject jo = new JsonParser().parse(json).getAsJsonObject();
         //AssetsIndex
         String aindex = jo.get("assetIndex").getAsJsonObject().get("url").getAsString();
-        JsonObject aij = new JsonParser().parse(FTS.fts(DL.dlFile(aindex,aindex.replaceFirst("https://launchermeta.mojang.com","launchermeta")))).getAsJsonObject();
+        JsonObject aij = new JsonParser().parse(FTS.fts(DL.dlFile(aindex,aindex.replaceFirst("https://launchermeta.mojang.com","launchermeta")
+                .replaceFirst("https://piston-meta.mojang.com","launchermeta")))).getAsJsonObject();
         JsonObject aioj = aij.get("objects").getAsJsonObject();
         for (Map.Entry<String, JsonElement> map : aioj.entrySet()){
             JsonObject dlj = aioj.get(map.getKey()).getAsJsonObject();
@@ -27,23 +28,28 @@ public class SyncVersion {
         JsonObject dlj = jo.get("downloads").getAsJsonObject();
         if (dlj.has("server")){
             String server = dlj.get("server").getAsJsonObject().get("url").getAsString();
-            DL.dlFile(server,server.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("server").getAsJsonObject().get("sha1").getAsString());
+            DL.dlFile(server,server.replaceFirst("https://launcher.mojang.com","launcher")
+                    .replaceFirst("https://piston-data.mojang.com","launcher"),dlj.get("server").getAsJsonObject().get("sha1").getAsString());
         }
         if (dlj.has("client")){
             String client = dlj.get("client").getAsJsonObject().get("url").getAsString();
-            DL.dlFile(client,client.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("client").getAsJsonObject().get("sha1").getAsString());
+            DL.dlFile(client,client.replaceFirst("https://launcher.mojang.com","launcher")
+                    .replaceFirst("https://piston-data.mojang.com","launcher"),dlj.get("client").getAsJsonObject().get("sha1").getAsString());
         }
         if (dlj.has("client_mappings")){
             String client_mapping = dlj.get("client_mappings").getAsJsonObject().get("url").getAsString();
-            DL.dlFile(client_mapping,client_mapping.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("client_mappings").getAsJsonObject().get("sha1").getAsString());
+            DL.dlFile(client_mapping,client_mapping.replaceFirst("https://launcher.mojang.com","launcher")
+                    .replaceFirst("https://piston-data.mojang.com","launcher"),dlj.get("client_mappings").getAsJsonObject().get("sha1").getAsString());
         }
         if (dlj.has("server_mappings")){
             String server_mapping = dlj.get("server_mappings").getAsJsonObject().get("url").getAsString();
-            DL.dlFile(server_mapping,server_mapping.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("server_mappings").getAsJsonObject().get("sha1").getAsString());
+            DL.dlFile(server_mapping,server_mapping.replaceFirst("https://launcher.mojang.com","launcher")
+                    .replaceFirst("https://piston-data.mojang.com","launcher"),dlj.get("server_mappings").getAsJsonObject().get("sha1").getAsString());
         }
         if (dlj.has("windows_server")){
             String windows_server = dlj.get("windows_server").getAsJsonObject().get("url").getAsString();
-            DL.dlFile(windows_server,windows_server.replaceFirst("https://launcher.mojang.com","launcher"),dlj.get("windows_server").getAsJsonObject().get("sha1").getAsString());
+            DL.dlFile(windows_server,windows_server.replaceFirst("https://launcher.mojang.com","launcher")
+                    .replaceFirst("https://piston-data.mojang.com","launcher"),dlj.get("windows_server").getAsJsonObject().get("sha1").getAsString());
         }
         //Lib download
         JsonArray lijo = jo.get("libraries").getAsJsonArray();
